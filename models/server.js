@@ -21,6 +21,9 @@ class Server {
       // CORS
       this.app.use( cors() );
 
+      // Parseo y lectura del body d ela solicitid http
+      this.app.use( express.json() );
+
       // directorio Público
       this.app.use( express.static('public') );
    }
