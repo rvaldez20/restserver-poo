@@ -1,9 +1,25 @@
 const { response, request } = require('express');
 
 
-const usuariosGet = (req, res = response) => {
+const usuariosGet = (req=request, res=response) => {
+
+   /*
+      Si no se manda un parametro query pero se quiere recibir se le puede asignar un 
+      valor por defecto.
+
+
+   */
+
+   // const query = req.query;
+   const { q, nombre='No Name', apikey, page=1, limit } = req.query;
+
    res.json({
-      msg: 'get API - Usuarios GET'
+      msg: 'get API - Usuarios GET',
+      q,
+      nombre,
+      apikey,
+      page, 
+      limit
    })
 }
 
@@ -19,8 +35,13 @@ const usuariosPost = (req , res = response) => {
 }
 
 const usuariosPut = (req = request, res = response) => {
+
+   // const id = req.params.id;
+   const {id} = req.params;   
+
    res.status(400).json({
-      msg: 'put API - Usuarios PUT'
+      msg: 'put API - Usuarios PUT',
+      id
    })
 }
 
