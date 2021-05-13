@@ -1,15 +1,11 @@
 const { response, request } = require('express');
+const Usuario = require('../models/usuario');
+const bcryptjs = require('bcryptjs');
+
 
 
 const usuariosGet = (req=request, res=response) => {
-
-   /*
-      Si no se manda un parametro query pero se quiere recibir se le puede asignar un 
-      valor por defecto.
-
-
-   */
-
+   
    // const query = req.query;
    const { q, nombre='No Name', apikey, page=1, limit } = req.query;
 
@@ -23,18 +19,36 @@ const usuariosGet = (req=request, res=response) => {
    })
 }
 
-const usuariosPost = (req , res = response) => {
+const usuariosPost = async (req=request , res=response) => {
 
-   const { nombre, edad } = req.body;
+   
 
-   res.json({
-      msg: 'post API - Usuarios POST',
-      nombre,
-      edad
-   })
+   // const { google, ...resto } = req.body;
+   const { nombre, correo, password, rol } = req.body;
+   const usuario = new Usuario({ nombre, correo, password, rol });
+
+   // VALIDADCIONES
+   // Verificar si el correo existe
+   const existeEmail = await Usuario.findOne({ correo });
+   if( existeEmail ) {
+      return res.status(400).json({
+         msg: 'Ese correo ya esta registrado'
+      })
+   }
+
+   // encriptar la contraseña
+   const salt = bcryptjs.genSaltSync();
+   usuario.password = bcryptjs.hashSync( password, salt );
+
+   // Guardar en la db
+   await usuario.save();
+
+   res.json({      
+      usuario
+   });
 }
 
-const usuariosPut = (req = request, res = response) => {
+const usuariosPut = (req=request , res=response) => {
 
    // const id = req.params.id;
    const {id} = req.params;   
@@ -45,13 +59,13 @@ const usuariosPut = (req = request, res = response) => {
    })
 }
 
-const usuariosDelete = (req = request, res = response) => {
+const usuariosDelete = (req=request , res=response) => {
    res.json({
       msg: 'delete API - Usuarios DELETE'
    })
 }
 
-const usuariosPatch = (req, res = response) => {
+const usuariosPatch = (req=request , res=response) => {
    res.json({
       msg: 'patch API - Usuarios PATCH'
    })
