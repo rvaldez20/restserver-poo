@@ -15,6 +15,7 @@ const { usuariosGet,
 // routes para usuarios
 router.get('/', usuariosGet);
 
+
 router.post('/', [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('password', 'El password debe ser de más de 6 caracteres').isLength({min: 6}),
@@ -25,9 +26,12 @@ router.post('/', [
 	validarCampos
 ], usuariosPost);
 
+
 router.put('/:id', usuariosPut);
 
+
 router.delete('/', usuariosDelete);
+
 
 router.patch('/', usuariosPatch);
 
