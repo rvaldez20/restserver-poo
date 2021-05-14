@@ -24,14 +24,7 @@ const usuariosPost = async (req=request , res=response) => {
    const { nombre, correo, password, rol } = req.body;
    const usuario = new Usuario({ nombre, correo, password, rol });
 
-   // VALIDADCIONES
-   // Verificar si el correo existe
-   const existeEmail = await Usuario.findOne({ correo });
-   if( existeEmail ) {
-      return res.status(400).json({
-         msg: 'Ese correo ya esta registrado'
-      })
-   }
+   // Las validaciones se hacen en usuarios.routes.js
 
    // encriptar la contraseña
    const salt = bcryptjs.genSaltSync();

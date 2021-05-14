@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const { check } = require('express-validator');
 
-const { esRoleValido } = require('../helpers/db-validators');
+const { esRoleValido, emailExiste } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
 
 const { usuariosGet, 
@@ -21,7 +21,8 @@ router.post('/', [
 	check('password', 'El password debe ser de más de 6 caracteres').isLength({min: 6}),
 	check('correo', 'El correo no es valido').isEmail(),
 	// check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
-	// Seria lo mismo que ponerlo asi, porque es el mismo parametro
+	check('correo').custom( emailExiste ),
+	// Seria lo mismo que ponerlo asi (rol) => esRoleValido(rol) , porque es el mismo parametro
 	check('rol').custom( esRoleValido ),
 	validarCampos
 ], usuariosPost);
