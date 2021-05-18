@@ -8,8 +8,7 @@ const { validarCampos } = require('../middlewares/validar-campos');
 const { usuariosGet, 
         usuariosPost, 
         usuariosPut,
-        usuariosDelete,
-        usuariosPatch } = require('../controllers/usuarios.controllers');
+        usuariosDelete } = require('../controllers/usuarios.controllers');        
 
 
 // routes para usuarios
@@ -43,7 +42,7 @@ router.delete('/:id', [
 ], usuariosDelete);
 
 
-router.patch('/', usuariosPatch);
+// router.patch('/', usuariosPatch);
 
 
 
