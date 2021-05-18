@@ -4,18 +4,22 @@ const bcryptjs = require('bcryptjs');
 
 
 
-const usuariosGet = (req=request, res=response) => {
-   
-   // const query = req.query;
-   const { q, nombre='No Name', apikey, page=1, limit } = req.query;
+const usuariosGet = async(req=request, res=response) => {
+      
+   // obtenemos el argumento query limit, si no se manda se pone pordefecto 5
+   // .limit -> especifica el numero d eregistros
+   // .skip  -> extra apartir de ese numero, 
+   //           ejemplo si usamos .skip(5) nos trae del 6 en adelante, dependera si tenemos
+   //           especificado el limit. Si el skip es mayor que el numero de registros
+   //           retornara un array vacio
+   // TODO: validar que limite y desde sean un Number
+   const { limite = 5, desde = 0 } = req.query;
+   const usuarios = await Usuario.find()
+      .skip(Number(desde))
+      .limit(Number(limite))
 
    res.json({
-      msg: 'get API - Usuarios GET',
-      q,
-      nombre,
-      apikey,
-      page, 
-      limit
+      usuarios
    })
 }
 
@@ -53,10 +57,7 @@ const usuariosPut = async(req=request , res=response) => {
 
    const usuario = await Usuario.findByIdAndUpdate( id, resto );
 
-   res.status(400).json({
-      msg: 'put API - Usuarios PUT',
-      usuario
-   })
+   res.status(400).json(usuario);
 }
 
 const usuariosDelete = (req=request , res=response) => {
