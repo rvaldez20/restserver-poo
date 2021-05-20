@@ -79,13 +79,18 @@ const usuariosDelete = async(req=request , res=response) => {
 
    const { id } = req.params;
 
+   // const uid = req.uid;
+
    // eliminacion fisica (NO es recomendable)
    // const usuario = await Usuario.findByIdAndDelete( id );
 
    // eliminacion logica
    const usuario = await Usuario.findByIdAndUpdate( id, {estado: false} );
 
-   res.json(usuario);
+   res.json({
+      usuario
+      // uid
+   });
 }
 
 // const usuariosPatch = (req=request , res=response) => {
