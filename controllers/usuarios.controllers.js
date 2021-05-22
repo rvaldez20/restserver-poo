@@ -3,9 +3,7 @@ const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 
 
-
-const usuariosGet = async(req=request, res=response) => {
-      
+const usuariosGet = async(req=request, res=response) => {      
    // obtenemos el argumento query limit, si no se manda se pone pordefecto 5
    // .limit -> especifica el numero d eregistros
    // .skip  -> extra apartir de ese numero, 
@@ -38,6 +36,7 @@ const usuariosGet = async(req=request, res=response) => {
    })
 }
 
+
 const usuariosPost = async (req=request , res=response) => {
    // const { google, ...resto } = req.body;
    const { nombre, correo, password, rol } = req.body;
@@ -57,8 +56,8 @@ const usuariosPost = async (req=request , res=response) => {
    });
 }
 
-const usuariosPut = async(req=request , res=response) => {
 
+const usuariosPut = async(req=request , res=response) => {
    // const id = req.params.id;
    const { id } = req.params;   
    const { _id, password, google, correo, ...resto } = req.body;
@@ -75,8 +74,8 @@ const usuariosPut = async(req=request , res=response) => {
    res.status(400).json(usuario);
 }
 
-const usuariosDelete = async(req=request , res=response) => {
 
+const usuariosDelete = async(req=request , res=response) => {
    const { id } = req.params;
    // const uid = req.uid;
 
@@ -88,8 +87,7 @@ const usuariosDelete = async(req=request , res=response) => {
    // const usuarioAutenticado = req.usuarioAuth;
 
    res.json({
-      usuario,
-      // usuarioAutenticado
+      usuario
    });
 }
 

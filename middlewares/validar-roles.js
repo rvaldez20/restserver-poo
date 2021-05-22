@@ -37,6 +37,7 @@ const tieneRole = ( ...roles ) => {
          });
       }
 
+      // si el rol del usuarioAuth no se encuentra dentro d elos roles permitidos en la ruta
       if( !roles.includes( req.usuarioAuth.rol ) ) {
          return res.status(401).json({
             msg: `El servicio requiere uno de estos roles ${ roles }`
