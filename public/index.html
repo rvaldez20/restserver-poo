@@ -4,11 +4,39 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Acceso Denegado</title>
+   <title>Google Signin</title>
+
+   <meta name="google-signin-client_id" content="284747085843-kk67vugpigg3si8phmlf4gqrsjumfmu0.apps.googleusercontent.com">
+
 </head>
 <body>
 
-   <h1>Acceso Denegado</h1>
+   <h1>Google Signin</h1>
+   <hr>
+
+   <div class="g-signin2" data-onsuccess="onSignIn"></div>
    
+   <script src="https://apis.google.com/js/platform.js" async defer></script>  
+   
+   <a href="#" onclick="signOut();">Sign out</a> 
+
+   <script>
+      function onSignIn(googleUser) {
+         var profile = googleUser.getBasicProfile();
+         // Do not send to your backend! Use an ID token instead.
+         console.log('ID: ' + profile.getId()); 
+         console.log('Name: ' + profile.getName());
+         console.log('Image URL: ' + profile.getImageUrl());
+         // This is null if the 'email' scope is not present.
+         console.log('Email: ' + profile.getEmail()); 
+      }
+
+      function signOut() {
+         var auth2 = gapi.auth2.getAuthInstance();
+         auth2.signOut().then(function () {
+            console.log('User signed out.');
+         });
+      }
+   </script>
 </body>
 </html>
