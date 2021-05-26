@@ -22,10 +22,12 @@
 
    <script>
       // console.log(window.location.hostname.includes('localhost')) 
+      // Se crea la url dependiendo si es producción o desarrollo
       var url = (window.location.hostname.includes('localhost'))
                   ? 'http://localhost:8080/api/auth/google'
                   : 'https://restserver-cbx23.herokuapp.com/api/auth/google'
 
+      // función para hacer el signin con google
       function onSignIn(googleUser) {
          var profile = googleUser.getBasicProfile();
          // Do not send to your backend! Use an ID token instead.
@@ -46,11 +48,10 @@
          })
             .then( resp => resp.json() )
             .then( data => console.log('Nuestro Server', data)) 
-            .catch( console.log );
-
-                 
+            .catch( console.log );    
       }
 
+      // función para hacer el signed out
       function signOut() {
          var auth2 = gapi.auth2.getAuthInstance();
          auth2.signOut().then(function () {
