@@ -15,11 +15,11 @@ const googleVerify = async ( id_token = '' ) => {
    // desestructuramos del payload lo siguiente:
    // Se tiene que cambiar los nombres a las variables
    const { name: nombre, 
-           picture: img, 
+           picture: imagen, 
            email: correo 
          } = payload;
 
-   return { nombre, img, correo };
+   return { nombre, imagen, correo };
 }
 
 module.exports = {
