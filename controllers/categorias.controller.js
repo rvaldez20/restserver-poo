@@ -3,7 +3,7 @@ const { Categoria } = require('../models');
 
 
 // obtenerCategoria - paginado - total - populate
-const obtenerCategoria = async(req=request, res=response) => {
+const obtenerCategorias = async(req=request, res=response) => {
 
    // obtener las categorias en base a los parametros para el paginado
    const { limite = 5, desde = 0 } = req.query;
@@ -36,6 +36,21 @@ const obtenerCategoria = async(req=request, res=response) => {
  
 
 // obtenerCategoria -populate {}
+const obtenerCategoria = async(req=request, res=response) => {
+
+   // obtenemos el ID de los parametros de la url
+   const {id} = req.params;
+
+   const categoria = await Categoria.find( {_id:id, estado:true} ).populate('usuario');
+   console.log(categoria);
+   if(categoria.length === 0) {
+      return res.status(401).json({
+         msg: `La Categoria con id ${id} no existe en la DB`
+      })
+   }
+
+   res.status(201).json(categoria);
+}
  
 
 // Crea una nueva Categortia en la DB
@@ -74,5 +89,6 @@ const crearCategoria = async(req=request, res=response) =>{
 
 module.exports = {
    crearCategoria,
+   obtenerCategorias,
    obtenerCategoria
 }
