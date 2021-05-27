@@ -24,7 +24,7 @@ const obtenerCategorias = async(req=request, res=response) => {
       Categoria.find( query )
       .skip(Number(desde))
       .limit(Number(limite))
-      .populate('usuario')
+      .populate('usuario', ['nombre', 'correo'])
    ]);
 
       // devolver la respuesta

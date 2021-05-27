@@ -18,6 +18,12 @@ const CategoriaSchema = Schema({
    }
 });
 
+CategoriaSchema.methods.toJSON = function() {
+   // con esto se saca del objeto del modelo la version y el password
+   const { __v, estado, ...data } = this.toObject();
+   return data;
+}
+
 module.exports = model( 'Categoria', CategoriaSchema );
 
 
