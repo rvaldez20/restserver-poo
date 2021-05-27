@@ -42,19 +42,13 @@ const obtenerCategoria = async(req=request, res=response) => {
    const {id} = req.params;
 
    const categoria = await Categoria.find( {_id:id, estado:true} ).populate('usuario');
-   console.log(categoria);
-   if(categoria.length === 0) {
-      return res.status(401).json({
-         msg: `La Categoria con id ${id} no existe en la DB`
-      })
-   }
-
+   
    res.status(201).json(categoria);
 }
  
 
 // Crea una nueva Categortia en la DB
-const crearCategoria = async(req=request, res=response) =>{
+const crearCategoria = async(req=request, res=response) => {
    
    // extraemos el nombre y lo convertimos a mayusculas
    const nombre = req.body.nombre.toUpperCase();
@@ -83,6 +77,16 @@ const crearCategoria = async(req=request, res=response) =>{
 
 
 // Actualizar la categoria
+const actualizarCategoria = async(req=request, res=response) => {
+   // obtenemos el id d elos paramas
+   const { id } = req.params;
+   const { _id, estado, usuario, ...resto} = req.body
+   resto.nombre = resto.nombre.toUpperCase();
+
+   const categoria = await Categoria.findByIdAndUpdate(id, resto)
+
+   res.status(201).json(categoria);
+}
 
 
 // Eliminar la categoria - estado a false
@@ -90,5 +94,6 @@ const crearCategoria = async(req=request, res=response) =>{
 module.exports = {
    crearCategoria,
    obtenerCategorias,
-   obtenerCategoria
+   obtenerCategoria,
+   actualizarCategoria
 }

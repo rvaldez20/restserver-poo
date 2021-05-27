@@ -1,6 +1,10 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { crearCategoria, obtenerCategorias, obtenerCategoria } = require('../controllers/categorias.controller');
+const { crearCategoria, 
+        obtenerCategorias, 
+        obtenerCategoria ,
+        actualizarCategoria
+      } = require('../controllers/categorias.controller');
 
 const {existeCategoriaPorId} = require('../helpers/db-validators')
 
@@ -29,9 +33,13 @@ router.post('/', [
 
 
 // Actualizar categoria por ID - Privado - Cualquier persona con un token valido
-router.put('/:id', (req, res) =>{
-   res.json('PUT')
-});
+router.put('/:id', [
+   validarJWT,
+   check('id','No es un ID Categoria valido').isMongoId(),
+   check('id').custom( existeCategoriaPorId ),
+   check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+   validarCampos   
+], actualizarCategoria);
 
 
 // Borrar (logica) categoria por ID - soolo ADMIN - Cualquier persona con un token valido
