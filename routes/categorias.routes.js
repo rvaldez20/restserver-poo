@@ -3,12 +3,13 @@ const { check } = require('express-validator');
 const { crearCategoria, 
         obtenerCategorias, 
         obtenerCategoria ,
-        actualizarCategoria
+        actualizarCategoria,
+        eliminarCategoria
       } = require('../controllers/categorias.controller');
 
 const {existeCategoriaPorId} = require('../helpers/db-validators')
 
-const { validarJWT, validarCampos } = require('../middlewares');
+const { validarJWT, validarCampos, tieneRole } = require('../middlewares');
 
 const router = Router();
 
@@ -43,9 +44,13 @@ router.put('/:id', [
 
 
 // Borrar (logica) categoria por ID - soolo ADMIN - Cualquier persona con un token valido
-router.delete('/:id', (req, res) =>{
-   res.json('DELETE (logico)')
-});
+router.delete('/:id', [
+   validarJWT,
+   tieneRole('ADMIN_ROLE'),
+   check('id','No es un ID Categoria valido').isMongoId(),
+   check('id').custom( existeCategoriaPorId ),   
+	validarCampos
+], eliminarCategoria);
 
 
 module.exports = router;
