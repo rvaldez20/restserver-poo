@@ -37,8 +37,14 @@ const obtenerProductos = async(req, res=response) => {
 
 
 // obtener un solo produecto
-const obtenerProducto = (req, res=response) => {
-   res.send('Obtener un producto')
+const obtenerProducto = async(req, res=response) => {
+   // obtenemos el ID de los parametros de la url
+   const { id } = req.params;
+
+   const producto = await Producto.findById( id )
+     .populate('usuario', ['nombre', 'correo']).populate('categoria', 'nombre');
+   
+   res.status(201).json(producto);
 }
 
 
@@ -80,13 +86,13 @@ const crearProducto = async(req=request, res=response) => {
 
 
 // editar un produecto
-const actualizarProducto = (req, res=response) => {
+const actualizarProducto = async(req, res=response) => {
    res.send('Editar un producto')
 }
 
 
 // eliminar un produecto
-const eliminarProducto = (req, res=response) => {
+const eliminarProducto = async(req, res=response) => {
    res.send('Eliminar un producto')
 }
 

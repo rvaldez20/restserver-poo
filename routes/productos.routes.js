@@ -21,7 +21,11 @@ router.get('/', obtenerProductos);
 
 
 // Obtener un solo producto por ID
-router.get('/:id', obtenerProducto);
+router.get('/:id', [
+   check('id', 'No es un ID Categoria valido').isMongoId(),
+   check('id').custom( existeProductoPorId ),
+   validarCampos
+], obtenerProducto);
 
 
 // crear un producto
