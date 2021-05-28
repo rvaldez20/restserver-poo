@@ -9,7 +9,7 @@ const {
    eliminarProducto
 } = require('../controllers/productos.controller');
 
-const { existeProductoPorId } = require('../helpers/db-validators');
+const { existeCategoriaPorId, existeProductoPorId } = require('../helpers/db-validators');
 const { validarJWT, validarCampos, tieneRole } = require('../middlewares');
 
 const router = Router();
@@ -32,6 +32,8 @@ router.get('/:id', [
 router.post('/', [
    validarJWT,
    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+   check('categoria', 'No es in ID de catgoria valido').isMongoId(),
+   check('categoria').custom( existeCategoriaPorId ),
    validarCampos
 ], crearProducto);
 
@@ -39,7 +41,9 @@ router.post('/', [
 // Actualizar un producto
 router.put('/:id', [
    validarJWT,
-   check('id', 'No es un ID de Producto valido').isMongoId(),
+   // check('categoria', 'No es in ID de catgoria valido').isMongoId(),
+   check('id').custom( existeProductoPorId ),
+   // check('id', 'No es un ID de Producto valido').isMongoId(),
    validarCampos
 ],actualizarProducto);
 

@@ -42,36 +42,55 @@ const obtenerProducto = async(req, res=response) => {
    const { id } = req.params;
 
    const producto = await Producto.findById( id )
-     .populate('usuario', ['nombre', 'correo']).populate('categoria', 'nombre');
+     .populate('usuario', ['nombre', 'correo'])
+     .populate('categoria', 'nombre');
    
-   res.status(201).json(producto);
+   res.status(201).json( producto );
 }
 
 
 // crear un produecto
 const crearProducto = async(req=request, res=response) => {
 
-   const { precio, descripcion} = req.body;
-   const nombre = req.body.nombre.toUpperCase();
-   let usuario = req.usuarioAuth._id;
-   let categoria = mongoose.Types.ObjectId('60b0354c4df86e2380a06821');
+   const { estado, usuario, ...body } = req.body;
+   const productoDB = await Producto.findOne({ nombre: body.nombre});
+   
+   // verificamos si existe el producto   
+   if( productoDB ) {
+      return res.status(400).json({
+         msg: `El Producto ${productoDB.nombre}, ya existe`
+      });
+   }
+
+   const data = {
+      ...body,
+      nombre: body.nombre.toUpperCase(),
+      usuario: req.usuarioAuth,
+   }
+
+
+
+   // const { precio, descripcion} = req.body;
+   // const nombre = req.body.nombre.toUpperCase();
+   // let usuario = req.usuarioAuth._id;
+   // let categoria = mongoose.Types.ObjectId('60b0354c4df86e2380a06821');
 
    // verificamos si existe el producto
-    const productoDB = await Producto.findOne({nombre});
-    if( productoDB ) {
-       return res.status(400).json({
-          msg: `El Producto ${productoDB.nombre}, ya existe`
-       });
-    }
+   // const productoDB = await Producto.findOne({nombre});
+   // if( productoDB ) {
+   //    return res.status(400).json({
+   //       msg: `El Producto ${productoDB.nombre}, ya existe`
+   //    });
+   // }
  
    // generamos la data que se va guardar
-   const data = {
-      nombre,
-      usuario,
-      precio,
-      categoria,
-      descripcion
-   }
+   // const data = {
+   //    nombre,
+   //    usuario,
+   //    precio,
+   //    categoria,
+   //    descripcion
+   // }
 
    // console.log(data);
  
@@ -79,9 +98,7 @@ const crearProducto = async(req=request, res=response) => {
     const producto = new Producto( data );
     await producto.save();
     
-   res.status(201).json({
-      producto
-   });
+   res.status(201).json(producto);
 }
 
 
@@ -90,9 +107,13 @@ const actualizarProducto = async(req, res=response) => {
    // obtenemos el id d elos paramas y el body
    const { id } = req.params;
    const { estado, usuario, ...data} = req.body
-   data.nombre = data.nombre.toUpperCase();
+
+   // verificamos si estan enviando el nombre
+   if(data.nombre){
+      data.nombre = data.nombre.toUpperCase();
+   }
    data.usuario = req.usuarioAuth._id;
-   data.categoria = mongoose.Types.ObjectId('60b0354c4df86e2380a06821');
+   // data.categoria = mongoose.Types.ObjectId('60b0354c4df86e2380a06821');
 
    const producto = await Producto.findByIdAndUpdate(id, data, {new: true});
 
