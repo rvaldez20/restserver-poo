@@ -102,7 +102,12 @@ const actualizarProducto = async(req, res=response) => {
 
 // eliminar un produecto
 const eliminarProducto = async(req, res=response) => {
-   res.send('Eliminar un producto')
+   // obtenemos el id de los parms
+   const { id } = req.params;
+   
+   const productoBorrado = await Producto.findByIdAndUpdate( id, {estado: false}, {new: true});
+
+   res.status(200).json(productoBorrado)
 }
 
 

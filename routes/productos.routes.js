@@ -45,7 +45,13 @@ router.put('/:id', [
 
 
 // Borrear un producto
-router.delete('/:id', eliminarProducto);
+router.delete('/:id', [
+   validarJWT,
+   tieneRole('ADMIN_ROLE'),
+   check('id','No es un ID de Producto valido').isMongoId(),
+   check('id').custom( existeProductoPorId ),   
+	validarCampos
+],eliminarProducto);
 
 
 
