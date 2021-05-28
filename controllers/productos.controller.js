@@ -87,7 +87,16 @@ const crearProducto = async(req=request, res=response) => {
 
 // editar un produecto
 const actualizarProducto = async(req, res=response) => {
-   res.send('Editar un producto')
+   // obtenemos el id d elos paramas y el body
+   const { id } = req.params;
+   const { estado, usuario, ...data} = req.body
+   data.nombre = data.nombre.toUpperCase();
+   data.usuario = req.usuarioAuth._id;
+   data.categoria = mongoose.Types.ObjectId('60b0354c4df86e2380a06821');
+
+   const producto = await Producto.findByIdAndUpdate(id, data, {new: true});
+
+   res.status(201).json(producto);
 }
 
 

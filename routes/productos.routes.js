@@ -22,7 +22,7 @@ router.get('/', obtenerProductos);
 
 // Obtener un solo producto por ID
 router.get('/:id', [
-   check('id', 'No es un ID Categoria valido').isMongoId(),
+   check('id', 'No es un ID Producto valido').isMongoId(),
    check('id').custom( existeProductoPorId ),
    validarCampos
 ], obtenerProducto);
@@ -37,7 +37,11 @@ router.post('/', [
 
 
 // Actualizar un producto
-router.put('/:id', actualizarProducto);
+router.put('/:id', [
+   validarJWT,
+   check('id', 'No es un ID de Producto valido').isMongoId(),
+   validarCampos
+],actualizarProducto);
 
 
 // Borrear un producto

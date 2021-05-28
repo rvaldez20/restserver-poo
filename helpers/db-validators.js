@@ -37,7 +37,7 @@ const existeCategoriaPorId = async( id ) =>{
 const existeProductoPorId = async( id ) =>{
    const existeProducto = await Producto.findById(id);
    if( !existeProducto ) {
-      throw new Error(`El ID ${ id } de la Categoria no existe`);
+      throw new Error(`El ID ${ id } del Producto no existe`);
    }
 }
 
