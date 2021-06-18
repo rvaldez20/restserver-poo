@@ -3,15 +3,18 @@ const { check } = require('express-validator');
 
 const { cargarArchivo, actualizarImagen } = require('../controllers/uploads.controller');
 const { coleccionesPermitidas } = require('../helpers');
-const { validarCampos } = require('../middlewares/validar-campos');
+const { validarCampos, validarArchivoSubir } = require('../middlewares');
 
 const router = Router();
 
 // route para cargar un archivo
-router.post('/', cargarArchivo);
+router.post('/', [
+   validarArchivoSubir
+], cargarArchivo);
 
 // ruta para actualizar
 router.put('/:coleccion/:id', [
+   validarArchivoSubir,
    check('id', 'No es un ID de usuario valido (mongoId)').isMongoId(),
    check('coleccion').custom( c => coleccionesPermitidas( c, ['usuarios', 'productos'] )),
    validarCampos
