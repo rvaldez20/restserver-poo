@@ -1,4 +1,4 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const { subirArchivo } = require("../helpers");
 
 
@@ -10,16 +10,34 @@ const cargarArchivo = async (req, res = response) => {
       return;
    }
 
-   // imagenes
-   const nombre = await subirArchivo( req.files );
+   try {
+
+      // imagenes
+      // const nombre = await subirArchivo( req.files, ['txt', 'md'], 'textos' );
+      const nombre = await subirArchivo( req.files, undefined, 'imgs' );
+      res.json({
+         nombre
+      });      
+   } catch (error) {
+      res.status(400).json({msg: error})
+   }
+}
+
+
+
+const actualizarImagen = async (req = request, res = response) => {
+
+   const { id, coleccion } = req.params;
 
    res.json({
-      nombre
-   });
-   
+      id,
+      coleccion
+   })
+
 }
 
 
 module.exports = {
-   cargarArchivo
+   cargarArchivo,
+   actualizarImagen
 }
