@@ -129,10 +129,11 @@ const actualizarImagenCloudinary = async (req = request, res = response) => {
       // SOLUCION con destructuracion y split
       const [ public_id ] = nombreConExtension.split('.');
       
+      // PARA TEST
       // console.log(nombreArr[7]);
       // console.log(public_id);
 
-      // Eliminamos la imagen (se pued equitar o dejar el await pq no necesitamos espera  que la borre)
+      // Eliminamos imagen- se puede quitar el await pq no necesitamos espera que la borre
       cloudinary.uploader.destroy( public_id );      
    }
 
